@@ -4,8 +4,10 @@ import "babel-polyfill";
 import { log, sel } from "../common/lib";
 
 import ReactDOM from "react-dom";
-import React, { Component } from "react";
-import Button from "./components/button.jsx";
-import Button2 from "./components/button.pug";
+//import React, { Component } from "react";
+import Field from "./components/field.js";
 
-ReactDOM.render(<Button />, sel(".container"));
+const field = new Field().render();
+ReactDOM.render(field, sel(".container"));
+
+//ReactDOM.render(<Field />, sel(".container"));

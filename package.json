@@ -37,7 +37,6 @@
     "postcss-loader": "^3.0.0",
     "prettier": "^1.15.3",
     "prettier-webpack-plugin": "^1.2.0",
-    "pug-as-jsx-loader": "^1.0.59",
     "pug-html-loader": "^1.1.5",
     "sass-loader": "^7.1.0",
     "url-loader": "^1.1.2",
@@ -48,8 +47,6 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.26.0",
-    "jsx": "^0.9.89",
-    "prop-types": "^15.6.2",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }
