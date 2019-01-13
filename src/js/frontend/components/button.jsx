@@ -1,46 +1,8 @@
 import React, { Component } from "react";
 
-/*
-const markup = React.createElement(
-  "div",
-  { id: "d7", className: "i8" },
-  React.createElement("div", null, React.createElement("div", null)),
-  React.createElement("div", null, React.createElement("div", null))
-);
-*/
-
 const log = console.log.bind(console);
 const crel = React.createElement;
 const frag = React.Fragment;
-
-// const mark = `
-
-// div(id="d0")
-//   div(id="d1")
-//     div(id="d2")
-//   div(id="d3")
-//     div(id="d4")
-
-// `.trim();
-
-// const mark = `
-
-// div(id="d0")
-//   div(id="d1")
-//   div(id="d2")
-
-// `.trim();
-
-// const mark = `
-
-// div(id="d0")
-//   div(id="d1")
-//     div(id="d2")
-//     div(id="d21")
-//       div(id="d3")
-//   div(id="d4")
-
-// `.trim();
 
 const mark = `
 
@@ -70,110 +32,6 @@ function slicer(str) {
   attrs.key = "key" + Math.round(1e15 * Math.random());
   return { tab, tag, attrs, tail };
 }
-
-/*
-function ext() {
-  let flatArr = [],
-    nestArr = [],
-    backArr = [],
-    cnt = -1,
-    children = {},
-    tabPre = 0,
-    backl = "default",
-    store,
-    returnFlag,
-    acc,
-    cur;
-
-  function setMode(pre, cur) {
-    if (pre < cur) return "nest";
-    else if (pre > cur) return "back";
-    return "flat";
-  }
-
-  function getMode(mode) {
-    if (mode === "flat") return flatArr;
-    else if (mode === "nest") return nestArr;
-    return backArr;
-  }
-
-  function thr(str) {
-    const { tab, tag, attrs, tail } = slicer(str);
-
-    let mode = setMode(tabPre, tab);
-    tabPre = tab;
-    cnt++;
-
-    if (tail) {
-      if (!cnt) {
-        log(1);
-        log(mode, "doesnt matter");
-        
-        // thr(tail);
-        // const arr = getMode(mode);
-        // return crel(tag, attrs, ...arr);
-        
-        thr(tail);
-
-        return crel(tag, attrs, ...nestArr);
-      } else {
-        log(2);
-        log(mode);
-        thr(tail);
-        if (returnFlag) {
-          returnFlag = false;
-          mode = "back";
-        }
-        const arr = getMode(mode);
-        children = crel(tag, attrs, ...arr);
-
-        //    log(children); // d21 -> d3
-        //      log("flatArr", ...flatArr);
-        if (backl !== "default" && backl === tab) {
-          backl = "default";
-          backArr = [];
-          flatArr = [children, ...flatArr, store];
-          nestArr = [children, store];
-        } else {
-          flatArr = [children, ...flatArr];
-          nestArr = [children];
-        }
-
-        
-        // thr(tail);
-        // const arr = getMode(mode);
-        // children = crel(tag, attrs, ...arr);
-        // nestArr = [children];
-        // flatArr = [children, ...flatArr];
-        
-      }
-    } else {
-      log(3);
-      log(mode);
-      children = crel(tag, attrs);
-      if (mode !== "back") {
-        flatArr = [children, ...flatArr];
-        nestArr = [children];
-      } else {
-        flatArr = [];
-        nestArr = [];
-        backArr = [];
-        backl = 1;
-        store = children;
-        returnFlag = true;
-      }
-
-      
-      // children = crel(tag, attrs);
-      // nestArr = [children];
-      // flatArr = [children, ...flatArr];
-      
-    }
-  }
-
-  return thr(mark);
-}
-*/
 
 function ext() {
   let cnt = 0,
@@ -228,9 +86,3 @@ class Button extends Component {
 }
 
 export default Button;
-
-/*
-
-создание элементов происходит в обратном порядке, поэтому текущий таб сравнивается со следущим
-
-*/
