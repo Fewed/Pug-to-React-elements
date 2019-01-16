@@ -19,9 +19,10 @@ div(id="d0")
 
 const mark = `
 
-div(id="d00") 1
-div(id="d0") 2
+div(id="d00") 0#[span() 1]2#[span() 3]4
+div(id="d0")
   div(id="d1") 3
+    31
     div(id="d2") 4
     div(id="d21") 5
       div(id="d3") 6

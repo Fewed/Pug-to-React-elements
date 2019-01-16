@@ -60,7 +60,7 @@ div(class="input input-main" id="d5") 15
 //log(findValues(mark));
 
 const createSpaces = (num = 0, tabSize = 2) =>
-	[...Array(num)].reduce((acc) => acc + "	", "");
+	[...Array(num)].reduce((acc) => acc + "  ", "");
 
 function findValues2(str) {
 	let vals = str.match(/#\[.*?\]/g);
@@ -108,6 +108,8 @@ function splitRow(str, tab, tail) {
 	const shift = createSpaces(tab + 1);
 	preTail = preTail.reduce((acc, cur) => acc + shift + cur + "\n", "");
 	if (preTail.trim()) tail = preTail + tail;
+	// log(preTail);
+	// log(tail);
 
 	return { tag, attr, val, tail };
 }
@@ -131,6 +133,12 @@ function slicer(str, tabSize = 2) {
 	tail = s.tail;
 	const attrs = s.attr;
 
+	log(tail);
+
+	// let tArr = tail.split("\n");
+	// tArr = tArr.map((item) => (item.match(/ {2}/g) || []).length);
+	// log(tArr);
+
 	// let [tag, attrs, val] = [
 	// 	first.match(/\w*/)[0],
 	// 	setAttributes(first),
@@ -146,16 +154,16 @@ function ext(mark) {
 
 	function thr(str) {
 		const { tab, tag, attrs, val, tail } = slicer(str);
-		log({ tab, tag, attrs, val, tail });
+		//	log({ tab, tag, attrs, val, tail });
 
 		if (tail) {
 			thr(tail);
 			if (tabPre > tab) res = [crel(tag, attrs, val, ...res)];
-			else if (tabPre === tab) res = [crel(tag, attrs, val), ...res];
+			else if (tabPre === tab) res = [tag ? crel(tag, attrs, val) : val, ...res];
 			else {
 				depth = tabPre;
 				store = res;
-				res = tab === depth ? [] : [crel(tag, attrs, val)];
+				res = tab === depth ? [] : tag ? [crel(tag, attrs, val)] : [val];
 			}
 			if (tab === depth) {
 				res = [...res, ...store];
@@ -164,7 +172,7 @@ function ext(mark) {
 			tabPre = tab;
 			return crel(frag, null, ...res);
 		} else {
-			res = [crel(tag, attrs, val)];
+			res = tag ? [crel(tag, attrs, val)] : [val];
 			tabPre = tab;
 		}
 	}
