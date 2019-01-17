@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import { pre } from "./pre";
+import pre from "./pre";
+// pre.tabSize = 2;
 
 /*
 const mark = `
