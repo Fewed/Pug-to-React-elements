@@ -1,7 +1,7 @@
 {
   "name": "pug-to-react-elements",
   "version": "1.0.0",
-  "description": "",
+  "description": "A plugin for producing React elements from Pug templates without JSX",
   "main": "index.js",
   "scripts": {
     "start": "node ./src/js/backend/server.js",
@@ -15,8 +15,11 @@
       "frontend/**"
     ]
   },
-  "keywords": [],
-  "author": "NAME",
+  "keywords": [
+    "React",
+    "Pug"
+  ],
+  "author": "Fewed",
   "license": "ISC",
   "devDependencies": {
     "@babel/core": "^7.2.2",
