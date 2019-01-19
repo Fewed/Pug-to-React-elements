@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-//import pre from "pug-to-react-element";
-import pre from "./pre";
+import pre from "pug-to-react-element";
+//import pre from "./pre";
 //pre.tabSize = 4;
 
 const mark = `
