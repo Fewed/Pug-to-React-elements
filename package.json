@@ -1,10 +1,13 @@
 {
   "name": "pug-to-react-element",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A plugin for producing React elements from Pug templates without JSX",
   "main": "dist/index.min.js",
   "scripts": {
-    "min": "./node_modules/.bin/uglifyjs src/index.js -c -m -o dist/index.min.js"
+    "babel": "./node_modules/.bin/babel src/index.js -o dist/index.tr.js",
+    "min": "./node_modules/.bin/uglifyjs dist/index.tr.js -c -m -o dist/index.min.js",
+    "del": "./node_modules/.bin/del-cli dist/index.tr.js",
+    "build": "npm run babel && npm run min && npm run del"
   },
   "keywords": [
     "npm",
@@ -16,6 +19,10 @@
   "homepage": "https://github.com/Fewed/Pug-to-React-elements",
   "license": "MIT",
   "devDependencies": {
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.2.3",
+    "del-cli": "^1.1.0",
     "uglify-es": "^3.3.9"
   }
 }
