@@ -1,56 +1,21 @@
 {
-  "name": "pug-to-react-elements",
-  "version": "1.0.0",
+  "name": "pug-to-react-element",
+  "version": "0.1.0",
   "description": "A plugin for producing React elements from Pug templates without JSX",
-  "main": "index.js",
+  "main": "dist/index.min.js",
   "scripts": {
-    "start": "node ./src/js/backend/server.js",
-    "build": "webpack --mode production",
-    "dev": "webpack-dev-server --mode development --open",
-    "ndm": "nodemon ./src/js/backend/server.js",
-    "full": "start npm run dev | start npm run ndm"
-  },
-  "nodemonConfig": {
-    "ignore": [
-      "frontend/**"
-    ]
+    "min": "./node_modules/.bin/uglifyjs src/index.js -c -m -o dist/index.min.js"
   },
   "keywords": [
+    "npm",
+    "React.createElement",
     "React",
     "Pug"
   ],
   "author": "Fewed",
-  "license": "ISC",
+  "homepage": "https://github.com/Fewed/Pug-to-React-elements",
+  "license": "MIT",
   "devDependencies": {
-    "@babel/core": "^7.2.2",
-    "@babel/preset-env": "^7.2.3",
-    "@babel/preset-react": "^7.0.0",
-    "autoprefixer": "^9.4.4",
-    "babel-eslint": "^10.0.1",
-    "babel-loader": "^8.0.4",
-    "copy-webpack-plugin": "^4.6.0",
-    "css-loader": "^2.0.2",
-    "cssnano": "^4.1.8",
-    "eslint": "^5.11.0",
-    "file-loader": "^3.0.1",
-    "html-loader": "^0.5.5",
-    "html-webpack-plugin": "^3.2.0",
-    "mini-css-extract-plugin": "^0.5.0",
-    "node-sass": "^4.11.0",
-    "postcss-loader": "^3.0.0",
-    "prettier": "^1.15.3",
-    "prettier-webpack-plugin": "^1.2.0",
-    "pug-html-loader": "^1.1.5",
-    "sass-loader": "^7.1.0",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.28.1",
-    "webpack-cli": "^3.1.2",
-    "webpack-dev-server": "^3.1.11",
-    "webpack-node-externals": "^1.7.2"
-  },
-  "dependencies": {
-    "babel-polyfill": "^6.26.0",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "uglify-es": "^3.3.9"
   }
 }
