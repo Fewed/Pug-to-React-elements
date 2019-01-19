@@ -1,23 +1,7 @@
 import React, { Component } from "react";
-//import pre from "./pre";
-import pre from "pug-to-react-element";
-// pre.tabSize = 2;
-
-/*
-const mark = `
-
-div(id="d00") 7
-div(id="d0")
-  div(id="d1")
-    div(id="d2")
-    div(id="d21")
-      div(id="d3")
-    div(id="d4")
-      div(id="d5")
-        input(className="input input-main" type="tel" autoFocus required)
-
-`;
-*/
+//import pre from "pug-to-react-element";
+import pre from "./pre";
+//pre.tabSize = 4;
 
 const mark = `
 
@@ -26,9 +10,13 @@ div(id="d0")
   div(id="d1") 3
     31
     div(id="d2") 4
+div() m9
+  div() u7
     div(id="d21") 5
-      div(id="d3") 6
-    div(id="d4") 7
+  div(id="d3") 6
+    div() 87
+      div(id="d4") 7
+    input(className="input input-main" type="tel" autoFocus required)
      
 
 `;

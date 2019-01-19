@@ -1,29 +1,42 @@
-import React from "react";
+import { createElement as crEl, Fragment as crFr } from "react";
 
+/** defines indentation size */
 pre.tabSize = 2;
 
-const crEl = React.createElement;
-const crFr = React.Fragment;
-
+/** generates unique string */
 const getID = () => Date.now() + "" + Math.random();
 
+/** creates ndentation */
 const createSpaces = (num, tabSize = pre.tabSize) =>
 	[...Array(num * tabSize)].reduce((acc) => acc + " ", "");
 
-const findTabs = (str, tabSize = pre.tabSize) => {
-	if (tabSize === 2) return str.match(/ {2}/g);
-	else if (tabSize === 3) return str.match(/ {3}/g);
-	else if (tabSize === 4) return str.match(/ {4}/g);
-	throw new Error("A number of tabs must be in range 2-4 inclusive!");
+/** calculates number of tabs */
+const getTabs = (str, tabSize = pre.tabSize) => {
+	const selector = {
+		2: str.match(/ {2}/g),
+		3: str.match(/ {3}/g),
+		4: str.match(/ {4}/g),
+	};
+	const tabs = selector[tabSize];
+
+	if (tabs === undefined) {
+		throw new Error("A number of tabs must be in range 2-4 inclusive!");
+	}
+	return !tabs ? 0 : tabs.length;
 };
 
+/** generates attributes object for React.createElement */
 function setAttributes(str) {
-	const attrStr = str.slice(str.indexOf("(") + 1, str.indexOf(") "));
-	const attrs = attrStr.match(/\w*=".*?"/g) || [];
-	attrStr.split(/\w*=".*?"/).map((item) => {
-		const items = item.trim().split(" ");
-		items.map((sn) => {
-			if (sn) attrs.push(`${sn}=""`);
+	const attrsRaw = str.slice(str.indexOf("(") + 1, str.indexOf(") "));
+
+	/** gets attributes with value */
+	const attrs = attrsRaw.match(/\w*=".*?"/g) || [];
+
+	/** gets attributes without value */
+	attrsRaw.split(/\w*=".*?"/).map((item) => {
+		const singletons = item.trim().split(" ");
+		singletons.map((singleton) => {
+			if (singleton) attrs.push(`${singleton}=""`);
 		});
 	});
 
@@ -41,6 +54,7 @@ function setAttributes(str) {
 	return obj;
 }
 
+/** splits nested value to simple values */
 function getValues(str) {
 	let vals = str.match(/#\[.*?\]/g);
 	let res = [];
@@ -58,6 +72,7 @@ function getValues(str) {
 	return { first, preTail };
 }
 
+/** splits trimmed string to tag, attributes, value and tail */
 function splitRow(str, tab, tail) {
 	const case03 = str.match(/^\w*\(.*?\) .*/) || "",
 		case1 = str.match(/^\w*\(.*?\)$/) || "",
@@ -68,6 +83,11 @@ function splitRow(str, tab, tail) {
 		val = str.slice(str.indexOf(")") + 2),
 		preTail = [""];
 
+	/** 1. string includes tag, attributes and nested value
+	 *  2. string includes tag, attributes and simple value
+	 *  3. string does not include value
+	 *  4. string includes simple value
+	 */
 	if (case03 && case3) {
 		const values = getValues(val);
 		[val, preTail] = [values.first, values.preTail];
@@ -77,6 +97,7 @@ function splitRow(str, tab, tail) {
 
 	if (attrs) attrs = setAttributes(str);
 
+	/** adds nested values to tail */
 	const shift = createSpaces(tab + 1);
 	preTail = preTail.reduce((acc, cur) => acc + shift + cur + "\n", "");
 	if (preTail.trim()) tail = preTail + tail;
@@ -84,47 +105,54 @@ function splitRow(str, tab, tail) {
 	return { tag, attrs, val, tail };
 }
 
-function slicer(str) {
+/** splits tail to tabs, tag, attributes, value and tail */
+function splitTail(str) {
 	const ind = str.indexOf("\n");
 	let first, rest;
 	if (ind === -1) [first, rest] = [str, null];
 	else [first, rest] = [str.slice(0, ind), str.slice(ind + 1)];
-	let tab = findTabs(first);
-	tab = !tab ? 0 : tab.length;
+	let tab = getTabs(first);
+
 	first = first.trim();
 
 	return { tab, ...splitRow(first, tab, rest) };
 }
 
-function pre(mark) {
-	let tabPre, depth, res, store;
-	mark = mark.trim();
+/** main function */
+function pre(markup) {
+	let tabPre, tree;
+	const stack = [];
+	markup = markup.trim();
 
-	function thr(str) {
-		const { tab, tag, attrs, val, tail } = slicer(str);
+	/** inserts elements recursively starting from the end of markup */
+	function insertElement(str) {
+		const { tab, tag, attrs, val, tail } = splitTail(str);
 
 		if (tail) {
-			thr(tail);
-			if (tabPre > tab) res = [crEl(tag, attrs, val, ...res)];
-			else if (tabPre === tab) res = [tag ? crEl(tag, attrs, val) : val, ...res];
+			insertElement(tail);
+			if (tabPre > tab) tree = [crEl(tag, attrs, val, ...tree)];
+			else if (tabPre === tab) tree = [tag ? crEl(tag, attrs, val) : val, ...tree];
 			else {
-				depth = tabPre;
-				store = res;
-				res = tab === depth ? [] : tag ? [crEl(tag, attrs, val)] : [val];
+				stack.push({ tree, tabPre });
+
+				if (stack[stack.length - 1].tabPre === tab) tree = [];
+				else tree = tag ? [crEl(tag, attrs, val)] : [val];
 			}
-			if (tab === depth) {
-				res = [...res, ...store];
-				depth = undefined;
+
+			if (stack.length && stack[stack.length - 1].tabPre === tab) {
+				tree = [...tree, ...stack[stack.length - 1].tree];
+				stack.pop();
 			}
+
 			tabPre = tab;
-			return crEl(crFr, null, ...res);
+			return crEl(crFr, null, ...tree);
 		} else {
-			res = tag ? [crEl(tag, attrs, val)] : [val];
+			tree = tag ? [crEl(tag, attrs, val)] : [val];
 			tabPre = tab;
 		}
 	}
 
-	return thr(mark);
+	return insertElement(markup);
 }
 
 export default pre;
