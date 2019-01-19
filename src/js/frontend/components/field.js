@@ -1,5 +1,6 @@
 import React, { Component } from "react";
-import pre from "./pre";
+//import pre from "./pre";
+import pre from "pug-to-react-element";
 // pre.tabSize = 2;
 
 /*
