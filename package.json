@@ -47,7 +47,7 @@
   "dependencies": {
     "@babel/plugin-proposal-class-properties": "^7.2.3",
     "babel-polyfill": "^6.26.0",
-    "pug-to-react-element": "^0.4.1",
+    "pug-to-react-element": "^0.5.0",
     "react": "^16.7.0",
     "react-dom": "^16.7.0"
   }
