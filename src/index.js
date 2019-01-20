@@ -90,9 +90,9 @@ function pre(markup) {
 
   /** splits trimmed string to tag, attributes, value and tail */
   const splitRow = (str, tab, tail) => {
-    const case03 = str.match(/^\w*\(.*?\) .*/) || "",
-      case1 = str.match(/^\w*\(.*?\)$/) || "",
-      case3 = str.match(regExComplex) || "";
+    const case03 = str.match(/^\w*\(.*?\) .*/),
+      case1 = str.match(/^\w*\(.*?\)$/),
+      case3 = str.match(regExComplex);
 
     let tag = str.slice(0, str.indexOf("(")),
       attrs = str.slice(str.indexOf("(") + 1, str.indexOf(")")),
@@ -131,8 +131,9 @@ function pre(markup) {
   const splitTail = str => {
     const ind = str.indexOf("\n");
     let first, rest;
-    if (ind === -1) [first, rest] = [str, null];
+    if (ind === -1) [first, rest] = [str, ""];
     else [first, rest] = [str.slice(0, ind), str.slice(ind + 1)];
+
     let tab = getTabs(first);
 
     /** trims first spaces */
