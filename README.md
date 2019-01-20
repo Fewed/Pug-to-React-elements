@@ -12,7 +12,7 @@ A plugin for producing React elements from Pug templates without JSX
 
 ## Installation
 
-A plugin does not download any packages but require React module.
+A plugin does not download any packages but require React.
 
 ```sh
 npm i pug-to-react-element
@@ -33,7 +33,7 @@ const markup = `
 
 div() 0#[span() 1]2#[span() 3]4
 div()
-  div() 5
+  div(onClick={handler}) cnt: {cnt}, cnt2: {cnt2}
     6
     span() 7
     8
@@ -45,8 +45,15 @@ div() 9
 `;
 
 class MyComponent extends Component {
+	state = { cnt: 0, cnt2: 0 };
+
+	handler = () => {
+		let { cnt, cnt2 } = this.state;
+		this.setState({ cnt: cnt + 3, cnt2: cnt2 + 5 });
+	};
+
 	render() {
-		return pre(markup);
+		return pre.call(this, markup);
 	}
 }
 
@@ -60,10 +67,9 @@ import ReactDOM from "react-dom";
 import React, { Component } from "react";
 import MyComponent from "./components/MyComponent.js";
 
-const   root = document.querySelector("#root"),
-        myComponent = new MyComponent().render();
+const root = document.querySelector("#root");
 
-ReactDOM.render(myComponent, root);
+ReactDOM.render(<MyComponent />, root);
 ```
 
 ## Syntax
@@ -90,6 +96,9 @@ div()
 
 // creates <div>0<span>1</span>2</div>
 div() 0#[span() 1]2
+
+// creates element with event listener and dynamically changing value (see usage example)
+div(onClick={handler}) cnt: {cnt}
 ```
 
 ## Support
