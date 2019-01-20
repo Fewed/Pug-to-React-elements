@@ -45,6 +45,7 @@
     "webpack-node-externals": "^1.7.2"
   },
   "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.2.3",
     "babel-polyfill": "^6.26.0",
     "pug-to-react-element": "^0.3.0",
     "react": "^16.7.0",
