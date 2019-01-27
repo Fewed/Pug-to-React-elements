@@ -12,13 +12,20 @@ A plugin for producing React elements from Pug templates without JSX
 
 ## Installation
 
-A plugin does not download any packages but require React.
+A plugin does not download any packages but require React module.
 
 ```sh
 npm i pug-to-react-element
 ```
 
 ## Usage
+
+### API
+
+- `pre(markup)` - transforms Pug template string markup into React element structure. It is exported as default. A static property `tabSize` defines markup indentation.
+- `getID()` - generates unique string. Can be used for React element "key" property.
+
+### Example
 
 Create React component `MyComponent.js`:
 
@@ -33,7 +40,7 @@ const markup = `
 
 div() 0#[span() 1]2#[span() 3]4
 div()
-  div(onClick={handler}) cnt: {cnt}, cnt2: {cnt2}
+  div() 5
     6
     span() 7
     8
@@ -45,15 +52,8 @@ div() 9
 `;
 
 class MyComponent extends Component {
-	state = { cnt: 0, cnt2: 0 };
-
-	handler = () => {
-		let { cnt, cnt2 } = this.state;
-		this.setState({ cnt: cnt + 3, cnt2: cnt2 + 5 });
-	};
-
 	render() {
-		return pre.call(this, markup);
+		return pre(markup);
 	}
 }
 
@@ -67,9 +67,10 @@ import ReactDOM from "react-dom";
 import React, { Component } from "react";
 import MyComponent from "./components/MyComponent.js";
 
-const root = document.querySelector("#root");
+const   root = document.querySelector("#root"),
+        myComponent = new MyComponent().render();
 
-ReactDOM.render(<MyComponent />, root);
+ReactDOM.render(myComponent, root);
 ```
 
 ## Syntax
@@ -96,9 +97,6 @@ div()
 
 // creates <div>0<span>1</span>2</div>
 div() 0#[span() 1]2
-
-// creates element with event listener and dynamically changing value (see usage example)
-div(onClick={handler}) cnt: {cnt}
 ```
 
 ## Support
