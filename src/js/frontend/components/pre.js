@@ -178,4 +178,4 @@ function pre(markup) {
 	return insertElement(markup);
 }
 
-export default pre;
+export { pre as default, getID };
